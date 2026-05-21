@@ -82,6 +82,60 @@ module.exports = {
     mobileRatio: 0.4,           // 40% mobile viewers
   },
 
+  // Playlist support
+  playlists: [
+    // 'https://www.youtube.com/playlist?list=PLAYLIST_ID',
+  ],
+  playlistOptions: {
+    enabled: true,
+    shuffle: true,
+    maxVideosPerSession: 8,
+    minVideosPerSession: 2,
+  },
+
+  // Embed view settings
+  embed: {
+    enabled: true,
+    ratio: 0.15, // 15% views from embed
+  },
+
+  // Multi-day scheduler
+  multiDay: {
+    enabled: false,
+    dailyTargetHours: 4,
+    maxDailyHours: 8,
+    activeHours: { start: 7, end: 23 },
+    daysOfWeek: [0, 1, 2, 3, 4, 5, 6],
+  },
+
+  // Watch history bypass
+  historyBypass: {
+    maxRepeats: 3,        // Max times to watch same video per account per week
+    cooldownHours: 24,    // Min hours between same video+account
+  },
+
+  // IP-Account binding
+  ipBinding: {
+    enabled: true,
+    maxProxiesPerAccount: 2,
+  },
+
+  // Network filter
+  network: {
+    mode: 'natural', // 'natural' (allow all), 'stealth' (block 3rd party), 'minimal'
+  },
+
+  // Mute detection
+  mute: {
+    minVolume: 0.05,      // 5% minimum volume
+    checkInterval: 30000, // Check every 30s
+  },
+
+  // Watch hours target
+  dashboard: {
+    targetHours: 4000,    // YouTube monetization requirement
+  },
+
   // Proxy (reuse from main config or separate)
   proxies: [],
 

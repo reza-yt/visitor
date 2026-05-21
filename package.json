@@ -9,6 +9,7 @@
     "scheduled": "node src/index.js --scheduled",
     "youtube": "node src/youtube/index.js",
     "youtube:dev": "node src/youtube/index.js --verbose",
+    "youtube:multiday": "node src/youtube/index.js --multiday",
     "health-check": "node src/tools/proxyCheck.js",
     "docker:build": "docker-compose build",
     "docker:up": "docker-compose up -d",
