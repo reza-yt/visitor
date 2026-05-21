@@ -10,6 +10,7 @@
     "youtube": "node src/youtube/index.js",
     "youtube:dev": "node src/youtube/index.js --verbose",
     "youtube:multiday": "node src/youtube/index.js --multiday",
+    "youtube:week": "node src/youtube/weekPackage.js",
     "health-check": "node src/tools/proxyCheck.js",
     "docker:build": "docker-compose build",
     "docker:up": "docker-compose up -d",

@@ -257,6 +257,8 @@ npm run scheduled         # Scheduler mode
 # YouTube viewer
 npm run youtube           # Run YouTube viewer
 npm run youtube:dev       # Verbose mode
+npm run youtube:multiday  # Multi-day auto scheduler
+npm run youtube:week      # 🔥 1-WEEK PACKAGE (4000 jam, 40+ concurrent)
 
 # Tools
 npm run health-check      # Test proxies
@@ -267,6 +269,66 @@ npm run docker:up
 npm run docker:down
 npm run docker:logs
 ```
+
+---
+
+# 1-WEEK PACKAGE (Kejar 4000 Jam Tayang)
+
+## Setup Cepat
+
+```bash
+# 1. Install
+cd visitor && npm install
+
+# 2. Taruh cookies akun (500 akun)
+# Export dari browser → taruh di ./cookies/akun1.json, akun2.json, dst
+
+# 3. Taruh proxy list
+# Buat file ./proxies.txt (1 proxy per line)
+# Format: socks5://user:pass@host:port
+
+# 4. Set config di .env
+cp .env.example .env
+nano .env
+```
+
+```env
+# .env untuk Week Package
+YOUTUBE_VIDEOS=https://www.youtube.com/watch?v=VIDEO1,https://www.youtube.com/watch?v=VIDEO2,https://www.youtube.com/watch?v=VIDEO3
+CONCURRENT=30
+RAM=16
+TARGET_HOURS=4200
+QUALITY=144p
+COOKIES_DIR=./cookies
+PROXY_FILE=./proxies.txt
+```
+
+```bash
+# 5. Run! (24/7 sampai target tercapai)
+npm run youtube:week
+```
+
+## Spek & Estimasi
+
+| RAM | Max Concurrent | Jam/Hari | Hari ke 4000 jam |
+|-----|---------------|----------|-----------------|
+| 8 GB | ~20 browser | ~300 jam | ~14 hari |
+| 16 GB | ~35 browser | ~500 jam | ~8 hari |
+| 32 GB | ~70 browser | ~900 jam | ~5 hari |
+| 64 GB | ~140 browser | ~1500 jam | ~3 hari |
+
+## Fitur Week Package
+
+- RAM optimized (~350MB/browser vs 800MB normal)
+- Auto quality 144p (hemat bandwidth, 1 TB cukup)
+- 40+ concurrent browser support
+- Auto-retry session gagal
+- Mute detection (volume selalu >5%)
+- Watch history bypass (gak spam 1 video)
+- IP-Account binding (1 akun = 1 proxy tetap)
+- Progress dashboard & ETA
+- Graceful shutdown (Ctrl+C = save progress)
+- Auto-resume dari progress terakhir
 
 ## Requirements
 
