@@ -1,0 +1,37 @@
+version: '3.8'
+
+services:
+  visitor:
+    build: .
+    container_name: auto-visitor
+    restart: unless-stopped
+    env_file:
+      - .env
+    volumes:
+      - ./logs:/app/logs
+      - ./sessions:/app/sessions
+      - ./.env:/app/.env:ro
+    environment:
+      - NODE_ENV=production
+      - PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
+      - PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium
+    deploy:
+      resources:
+        limits:
+          memory: 2G
+          cpus: '2.0'
+        reservations:
+          memory: 512M
+          cpus: '0.5'
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    cap_add:
+      - SYS_ADMIN # Required for Chromium sandboxing
+    networks:
+      - visitor-net
+
+networks:
+  visitor-net:
+    driver: bridge

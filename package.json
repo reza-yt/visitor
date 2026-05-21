@@ -1,20 +1,30 @@
 {
   "name": "auto-visitor",
-  "version": "1.0.0",
-  "description": "Auto visitor website with human behavior, organic behavior, and proxy rotation",
+  "version": "2.0.0",
+  "description": "Auto visitor website with human behavior, organic behavior, proxy rotation, and anti-detection",
   "main": "src/index.js",
   "scripts": {
     "start": "node src/index.js",
-    "dev": "node src/index.js --verbose"
+    "dev": "node src/index.js --verbose",
+    "scheduled": "node src/index.js --scheduled",
+    "health-check": "node src/tools/proxyCheck.js",
+    "docker:build": "docker-compose build",
+    "docker:up": "docker-compose up -d",
+    "docker:down": "docker-compose down",
+    "docker:logs": "docker-compose logs -f"
   },
-  "keywords": ["visitor", "automation", "puppeteer", "proxy", "human-behavior"],
+  "keywords": ["visitor", "automation", "puppeteer", "proxy", "human-behavior", "stealth"],
   "license": "MIT",
   "dependencies": {
     "puppeteer": "^21.6.1",
     "puppeteer-extra": "^3.3.6",
     "puppeteer-extra-plugin-stealth": "^2.11.2",
-    "proxy-chain": "^2.4.0",
-    "chalk": "^4.1.2",
-    "cli-progress": "^3.12.0"
+    "proxy-chain": "^2.4.0"
+  },
+  "optionalDependencies": {
+    "playwright": "^1.40.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
   }
 }
