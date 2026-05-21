@@ -1,0 +1,20 @@
+{
+  "name": "auto-visitor",
+  "version": "1.0.0",
+  "description": "Auto visitor website with human behavior, organic behavior, and proxy rotation",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "node src/index.js --verbose"
+  },
+  "keywords": ["visitor", "automation", "puppeteer", "proxy", "human-behavior"],
+  "license": "MIT",
+  "dependencies": {
+    "puppeteer": "^21.6.1",
+    "puppeteer-extra": "^3.3.6",
+    "puppeteer-extra-plugin-stealth": "^2.11.2",
+    "proxy-chain": "^2.4.0",
+    "chalk": "^4.1.2",
+    "cli-progress": "^3.12.0"
+  }
+}
