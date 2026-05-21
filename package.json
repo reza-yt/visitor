@@ -7,6 +7,8 @@
     "start": "node src/index.js",
     "dev": "node src/index.js --verbose",
     "scheduled": "node src/index.js --scheduled",
+    "youtube": "node src/youtube/index.js",
+    "youtube:dev": "node src/youtube/index.js --verbose",
     "health-check": "node src/tools/proxyCheck.js",
     "docker:build": "docker-compose build",
     "docker:up": "docker-compose up -d",
