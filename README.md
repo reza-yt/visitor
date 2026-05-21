@@ -1,188 +1,276 @@
-# Auto Visitor v2.0 - Full Feature Bot
+# Auto Visitor v2.0 + YouTube Watch Hours Bot
 
-Tool auto visitor website dengan 16+ fitur termasuk human behavior, organic behavior, proxy rotator, fingerprint randomization, dan anti-detection lengkap.
+Tool lengkap auto visitor website + YouTube auto viewer untuk kejar jam tayang.
 
-## Features
+---
 
-| # | Feature | Description |
-|---|---------|-------------|
-| 1 | Cookie & Session Management | Auto-accept cookie popup, save/load session, inject GA/FB cookies |
-| 2 | Timezone & Geolocation Spoofing | 20+ timezone profiles, match proxy location |
-| 3 | Canvas/WebGL Fingerprint | Randomize canvas noise, WebGL vendor/renderer, audio context |
-| 4 | Error Recovery & Retry | Exponential backoff, error categorization, smart retry |
-| 5 | Scheduler / Cron | Schedule visits by hour, interval, or cron pattern |
-| 6 | Traffic Pattern Simulation | Peak hours, day-of-week weights, realistic distribution |
-| 7 | DNS over HTTPS (DoH) | Cloudflare/Google DoH, prevent DNS leaks |
-| 8 | Stats Dashboard & Logging | JSON/CSV logs, real-time dashboard, visit tracking |
-| 9 | Multi-Browser Engine | Puppeteer (Chromium) + Playwright (Firefox, WebKit) |
-| 10 | CAPTCHA Detection & Skip | Detect Cloudflare, reCAPTCHA, hCaptcha, auto-skip |
-| 11 | Bandwidth Throttling | Simulate 2G/3G/4G/WiFi speeds per device type |
-| 12 | Warm-up Phase | Gradual traffic ramp-up (5 phases) |
-| 13 | Proxy Health Checker | Test latency, filter dead proxies, score ranking |
-| 14 | .env & CLI Config | Environment variables + CLI arguments |
-| 15 | Docker Support | Dockerfile + docker-compose, resource limits |
-| 16 | Webhook Notifications | Telegram & Discord alerts (complete/error/captcha) |
+## 2 Mode:
 
-## Quick Start
+| Mode | Command | Fungsi |
+|------|---------|--------|
+| **Website Visitor** | `npm start` | Auto visit website dengan human behavior |
+| **YouTube Viewer** | `npm run youtube` | Auto nonton YouTube untuk kejar jam tayang |
 
-```bash
-# Clone & install
-cd visitor
-npm install
+---
 
-# Copy env file
-cp .env.example .env
-# Edit .env with your settings
+# YOUTUBE AUTO VIEWER (Kejar Jam Tayang)
 
-# Run
-npm start
+## Cara Setup YouTube Viewer
+
+### Step 1: Export Cookies dari Browser
+
+1. Login ke YouTube/Google pakai akun yang mau dipake nonton
+2. Install extension **"EditThisCookie"** atau **"Get cookies.txt"** (Chrome/Firefox)
+3. Export cookies sebagai **JSON** atau **Netscape (.txt)** format
+4. Simpan file ke folder `./cookies/`:
+
+```
+cookies/
+├── akun1.json          ← nama file = nama akun
+├── akun2.json
+├── akun3.txt           ← format Netscape juga support
+└── akun_cadangan.json
 ```
 
-## Configuration
+### Step 2: Set Video Target
 
-### Via .env file (recommended)
+Edit `src/youtube/config.js`:
+
+```javascript
+module.exports = {
+  videos: [
+    'https://www.youtube.com/watch?v=VIDEO_ID_1',
+    'https://www.youtube.com/watch?v=VIDEO_ID_2',
+    'https://www.youtube.com/watch?v=VIDEO_ID_3',
+  ],
+
+  watch: {
+    minWatchPercent: 60,      // Minimum nonton 60%
+    maxWatchPercent: 95,      // Maximum nonton 95%
+    sessionsPerDay: 5,        // 5 session per hari
+    totalDailyHours: 4,       // Target 4 jam per hari
+  },
+
+  accounts: {
+    cooldownMinutes: 30,      // Cooldown 30 menit antar akun sama
+  },
+
+  proxies: [
+    'socks5://user:pass@proxy1.com:1080',
+    'http://user:pass@proxy2.com:8080',
+  ],
+};
+```
+
+### Step 3: Run
 
 ```bash
+npm install
+npm run youtube            # Jalankan YouTube viewer
+npm run youtube:dev        # Mode verbose (detail logs)
+```
+
+---
+
+## Fitur YouTube Viewer
+
+| # | Fitur | Deskripsi |
+|---|-------|-----------|
+| 1 | **Cookie Login** | Login via cookies browser, gak perlu password, aman dari 2FA |
+| 2 | **Watch Retention** | Nonton 60-95% video dengan pola realistis (pause, rewind, skip) |
+| 3 | **Playback Telemetry** | Kirim heartbeat ke YouTube tiap 10 detik (real playback event) |
+| 4 | **Media Engagement** | Random volume, fullscreen, like, comment, subscribe |
+| 5 | **Codec Fingerprint** | Media codec support cocok sama device type |
+| 6 | **Account Trust** | Trust scoring & account aging (akun lama = lebih trusted) |
+| 7 | **Device Attestation** | Device identity persistent per akun (GPU, screen, hardware tetap) |
+| 8 | **Behavior History** | Riwayat nonton jangka panjang, organic browsing sebelum target |
+| 9 | **Ad Handling** | Tunggu 5-15s sebelum skip iklan (bukan instant skip) |
+| 10 | **Multi-Account Rotation** | Rotate akun dengan cooldown, gak spam satu akun |
+| 11 | **Organic Browsing** | Browse home, search, shorts dulu sebelum nonton target |
+| 12 | **Recommended Chain** | Klik video recommended setelah nonton (natural behavior) |
+
+---
+
+## Flow YouTube Viewer
+
+```
+1. Load cookies semua akun dari ./cookies/
+2. Pilih akun (rotation + cooldown check)
+3. Cek trust score akun (skip kalau perlu istirahat)
+4. Launch browser dengan stealth + device attestation
+5. Login via cookies
+6. Organic browsing dulu:
+   - Browse YouTube Home
+   - Scroll-scroll
+   - Maybe search / browse Shorts
+7. Navigate ke target video
+8. Handle iklan (tunggu, baru skip)
+9. Set volume random (30-85%)
+10. Generate watch plan (berapa % mau ditonton)
+11. Nonton dengan:
+    - Telemetry heartbeat tiap 10s
+    - Random pause, rewind, speed change
+    - Mouse movement & hover controls
+    - Handle mid-roll ads
+12. Post-watch engagement:
+    - Maybe like (15%)
+    - Maybe browse comments
+    - Maybe subscribe (5%)
+    - Maybe klik recommended video
+13. Save updated cookies
+14. Record watch time & update trust score
+15. Delay, lanjut video/session berikutnya
+```
+
+---
+
+## Tips Kejar Jam Tayang
+
+- Gunakan **5-10 akun** yang berbeda
+- Cooldown minimal **30 menit** per akun
+- Nonton **60-95%** video (jangan 100%, suspicious)
+- Spread nonton **sepanjang hari** (jangan sekaligus)
+- **1 proxy per akun** = IP unik
+- Update cookies setiap **1-2 minggu**
+- Akun yang lebih tua = lebih aman
+- Jangan langsung agresif, mulai pelan (2-3 video/hari per akun)
+
+---
+
+## Format Cookie yang Didukung
+
+### JSON Format (EditThisCookie / Puppeteer export):
+```json
+[
+  {
+    "name": "SID",
+    "value": "xxx...",
+    "domain": ".google.com",
+    "path": "/",
+    "secure": true,
+    "httpOnly": true
+  }
+]
+```
+
+### Netscape Format (cookies.txt):
+```
+.youtube.com	TRUE	/	TRUE	1735689600	SID	xxx...
+.google.com	TRUE	/	TRUE	1735689600	HSID	yyy...
+```
+
+---
+
+# WEBSITE AUTO VISITOR
+
+## Cara Pakai
+
+```bash
+# Edit .env
 cp .env.example .env
 nano .env
+
+# Run
+npm start                  # Auto visitor website
+npm run scheduled          # Mode scheduler (auto repeat)
+npm run health-check       # Test proxy
 ```
 
-Key settings:
-```env
-TARGET_URLS=https://your-site.com,https://your-site.com/blog
-PROXIES=http://user:pass@proxy1.com:8080,socks5://user:pass@proxy2.com:1080
-TOTAL_VISITS=100
-CONCURRENT_VISITS=3
-MOBILE_RATIO=0.6
-WARMUP_ENABLED=true
-TRAFFIC_PATTERN_ENABLED=true
-TELEGRAM_ENABLED=true
-TELEGRAM_BOT_TOKEN=your_bot_token
-TELEGRAM_CHAT_ID=your_chat_id
-```
+## Fitur Website Visitor
 
-### Via CLI arguments
+- Human behavior (scroll pelan 30s, mouse movement, reading simulation)
+- Proxy rotator (SOCKS4/SOCKS5/HTTP/HTTPS)
+- Random viewport, user-agent, referer
+- Mobile emulation, timezone spoofing
+- Canvas/WebGL fingerprint randomization
+- CAPTCHA detection & skip
+- Bandwidth throttling (3G/4G/WiFi)
+- Warm-up phase & traffic pattern
+- Cookie management
+- Error retry (exponential backoff)
+- Scheduler / cron
+- Stats logging (JSON/CSV)
+- Docker support
+- Telegram/Discord webhook
 
-```bash
-node src/index.js --total-visits=100 --concurrent-visits=3 --mobile-ratio=0.7
-node src/index.js --scheduled  # Run in scheduler mode
-```
-
-## Commands
-
-```bash
-npm start            # Run visitor
-npm run dev          # Run with verbose logging
-npm run scheduled    # Run with scheduler (auto repeat)
-npm run health-check # Test all proxies
-
-# Docker
-npm run docker:build  # Build image
-npm run docker:up     # Start container
-npm run docker:down   # Stop container
-npm run docker:logs   # View logs
-```
-
-## Docker
-
-```bash
-# Build & run
-docker-compose up -d
-
-# View logs
-docker-compose logs -f
-
-# Stop
-docker-compose down
-```
-
-## How It Works
-
-```
-1. Load config (.env → CLI → defaults)
-2. Health check all proxies
-3. Start warm-up phase (gradual ramp-up)
-4. For each visit:
-   a. Pick random proxy (unique IP)
-   b. Pick random user-agent (mobile/desktop)
-   c. Pick random viewport (30+ devices)
-   d. Pick random referer (Google/Facebook/direct)
-   e. Pick matching timezone & geolocation
-   f. Apply fingerprint randomization (canvas/WebGL/audio)
-   g. Apply bandwidth throttling (3G/4G/WiFi)
-   h. Resolve DNS via DoH
-   i. Launch stealth browser
-   j. Inject cookies, set headers
-   k. Navigate to target
-   l. Detect & handle CAPTCHA
-   m. Accept cookie consent popup
-   n. Simulate human behavior:
-      - Natural scroll (30s)
-      - Random mouse movements
-      - Simulate reading
-      - Click internal articles
-      - Tab switch simulation
-   o. Log stats & close
-5. Apply traffic pattern delays
-6. Save stats (JSON/CSV)
-7. Send webhook notification
-```
+---
 
 ## Project Structure
 
 ```
 visitor/
 ├── package.json
+├── .env.example
 ├── Dockerfile
 ├── docker-compose.yml
-├── .env.example
-├── .gitignore
-├── README.md
-└── src/
-    ├── index.js                    # Main orchestrator (v2)
-    ├── config.js                   # Default config
-    ├── envConfig.js                # .env & CLI parser
-    ├── tools/
-    │   └── proxyCheck.js           # Standalone proxy tester
-    └── modules/
-        ├── proxyRotator.js         # Proxy rotation & management
-        ├── userAgentRotator.js     # UA rotation (20+ agents)
-        ├── viewportRandomizer.js   # Random viewport (30+ devices)
-        ├── refererRandomizer.js    # Random referer headers
-        ├── humanBehavior.js        # Human behavior simulation
-        ├── cookieManager.js        # Cookie & session management
-        ├── timezoneSpoofer.js      # Timezone & geo spoofing
-        ├── fingerprintRandomizer.js# Canvas/WebGL/Audio fingerprint
-        ├── retryHandler.js         # Error recovery & retry
-        ├── scheduler.js            # Cron/interval scheduler
-        ├── trafficPattern.js       # Traffic pattern simulation
-        ├── dnsOverHttps.js         # DNS over HTTPS
-        ├── statsLogger.js          # Stats & file logging
-        ├── browserEngine.js        # Multi-browser engine
-        ├── captchaDetector.js      # CAPTCHA detection & skip
-        ├── bandwidthThrottle.js    # Bandwidth throttling
-        ├── warmupPhase.js          # Warm-up phase
-        ├── proxyHealthChecker.js   # Proxy health testing
-        └── webhookNotifier.js      # Telegram/Discord webhook
+├── cookies/                       ← Cookies akun YouTube (taruh di sini)
+├── src/
+│   ├── index.js                   ← Main website visitor
+│   ├── config.js
+│   ├── envConfig.js
+│   ├── tools/
+│   │   └── proxyCheck.js
+│   ├── modules/                   ← Shared modules
+│   │   ├── proxyRotator.js
+│   │   ├── userAgentRotator.js
+│   │   ├── viewportRandomizer.js
+│   │   ├── refererRandomizer.js
+│   │   ├── humanBehavior.js
+│   │   ├── cookieManager.js
+│   │   ├── timezoneSpoofer.js
+│   │   ├── fingerprintRandomizer.js
+│   │   ├── retryHandler.js
+│   │   ├── scheduler.js
+│   │   ├── trafficPattern.js
+│   │   ├── dnsOverHttps.js
+│   │   ├── statsLogger.js
+│   │   ├── browserEngine.js
+│   │   ├── captchaDetector.js
+│   │   ├── bandwidthThrottle.js
+│   │   ├── warmupPhase.js
+│   │   ├── proxyHealthChecker.js
+│   │   └── webhookNotifier.js
+│   └── youtube/                   ← YouTube auto viewer
+│       ├── index.js               ← Main YouTube viewer
+│       ├── config.js
+│       └── modules/
+│           ├── cookieLogin.js     ← Login via cookies
+│           ├── watchRetention.js  ← Watch retention simulation
+│           ├── playbackTelemetry.js ← YouTube heartbeat
+│           ├── mediaEngagement.js ← Like, subscribe, volume
+│           ├── codecFingerprint.js ← Codec matching
+│           ├── accountTrust.js    ← Trust score & aging
+│           ├── deviceAttestation.js ← Device identity
+│           └── behaviorHistory.js ← Long-term history
 ```
 
-## Webhook Setup
+---
 
-### Telegram
-1. Create bot via @BotFather
-2. Get chat ID via @userinfobot
-3. Set `TELEGRAM_BOT_TOKEN` and `TELEGRAM_CHAT_ID` in .env
+## All Commands
 
-### Discord
-1. Server Settings → Integrations → Webhooks → New
-2. Copy webhook URL
-3. Set `DISCORD_WEBHOOK_URL` in .env
+```bash
+# Website visitor
+npm start                 # Run visitor
+npm run dev               # Verbose mode
+npm run scheduled         # Scheduler mode
 
-## Notes
+# YouTube viewer
+npm run youtube           # Run YouTube viewer
+npm run youtube:dev       # Verbose mode
 
-- Gunakan Node.js 18+ 
-- Proxy berkualitas = hasil lebih baik
-- Concurrent 2-5 recommended (sesuai RAM)
-- Warm-up phase mencegah sudden spike
-- Traffic pattern membuat pola visit lebih natural
-- Tool ini untuk educational purposes only
+# Tools
+npm run health-check      # Test proxies
+
+# Docker
+npm run docker:build
+npm run docker:up
+npm run docker:down
+npm run docker:logs
+```
+
+## Requirements
+
+- Node.js 18+
+- Chromium (auto-installed via puppeteer)
+- Proxy (SOCKS4/SOCKS5/HTTP) - recommended
+- Cookie files untuk YouTube viewer
